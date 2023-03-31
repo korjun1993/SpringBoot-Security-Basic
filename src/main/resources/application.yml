@@ -1,4 +1,3 @@
-
 server:
   port: 8080
   servlet:
@@ -9,17 +8,12 @@ server:
       force: true
 
 spring:
-  mvc:
-    view:
-      prefix: /templates/
-      suffix: .mustache
-
   jpa:
     hibernate:
-      ddl-auto: create #update none
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    show-sql: true
+      ddl-auto: create #create update none
+    properties:
+      hibernate:
+        format_sql: true
 
   security:
     oauth2:
