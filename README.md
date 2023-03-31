@@ -1,1 +1,3 @@
-- 로그인/로그아웃 페이지가 이미 만들어져있다.
+# Reference
+- https://www.youtube.com/watch?v=7hrw03uzQHE&list=PL93mKxaRDidERCyMaobSLkvSPzYtIk0Ah&index=9
+- https://sennieworld.tistory.com/109
