@@ -37,3 +37,52 @@
 - 따라서 외부 세션 저장소는 In-Memory DB를 선택한다.
 - 일반적으로 Key-Value DB인 Redis, Memcached를 사용한다.
 
+---
+
+# JWT
+- JWT (JSON Web Token)는 당사자간에 정보를 JSON 객체로 안전하게 전송하기 위한 표준 ([RFC 7519](https://www.rfc-editor.org/rfc/rfc7519))
+- 정보는 공개 / 개인키 쌍을 사용하여 디지털 서명을 하기 때문에 신뢰할 수 있습니다. 
+
+## 구조
+![img.png](img/jwt1.png)
+- Header
+- Payload(데이터)
+- Signature
+
+
+<br/>
+
+**Header**
+![img.png](img/jwt0.png)
+- `alg`: 서명 알고리즘
+- `typ`: 토큰 타입
+- 헤더 정보는 **Base64Url** 방식으로 인코딩되어 JWT의 첫 번째 구성값이 된다.
+- Base64란 8비트 이진 데이터를 ASCII 문자로 바꾸는 인코딩 방식이다.
+
+**Payload**
+![img.png](img/jwt2.png)
+- 클레임(전달하고싶은 정보)를 포함하는 데이터
+- 세 가지 타입의 클레임이 있다.
+  - Registered claims:
+    - 사용하길 권장하는 미리 정의된 클레임 집합.
+    - iss(발행자)
+    - exp(만료시간)
+    - sub(주제)
+    - aud(청중)
+    - [기타](https://www.iana.org/assignments/jwt/jwt.xhtml)
+  - Public claims
+    - JWT를 사용하는 사람들이 원하는대로 정의
+    - 충돌을 피하기 위해서 [링크](https://www.iana.org/assignments/jwt/jwt.xhtml)에 정의된 것을 사용
+    - 또는 충볼 방지 네임스페이스를 포함하여 정의
+  - private claims
+    - 당사자간에 정보를 공유하기 위한 클레임
+
+**서명**
+![img.png](img/jwt3.png)
+- 서명을 통해 무결성을 검증
+
+## 
+
+# Reference
+- [시큐리티 특강, Youtube 메타코딩 채널](https://www.youtube.com/@metacoding)
+- https://jwt.io/introduction
