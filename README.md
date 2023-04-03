@@ -52,14 +52,14 @@
 
 <br/>
 
-**Header**
+### Header
 ![img.png](img/jwt0.png)
 - `alg`: 서명 알고리즘
 - `typ`: 토큰 타입
 - 헤더 정보는 **Base64Url** 방식으로 인코딩되어 JWT의 첫 번째 구성값이 된다.
 - Base64란 8비트 이진 데이터를 ASCII 문자로 바꾸는 인코딩 방식이다.
 
-**Payload**
+### Payload
 ![img.png](img/jwt2.png)
 - 클레임(전달하고싶은 정보)를 포함하는 데이터
 - 세 가지 타입의 클레임이 있다.
@@ -77,7 +77,7 @@
   - private claims
     - 당사자간에 정보를 공유하기 위한 클레임
 
-**서명**
+### Signature
 ![img.png](img/jwt3.png)
 - 서명을 통해 무결성을 검증
 
