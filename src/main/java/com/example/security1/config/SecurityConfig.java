@@ -1,11 +1,15 @@
 package com.example.security1.config;
 
+import com.example.security1.config.jwt.JwtAuthFilter;
+import com.example.security1.config.jwt.JwtAuthorizationFilter;
+import com.example.security1.domain.MemberRepository;
 import com.example.security1.filter.MyFilter1;
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.filters.CorsFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,6 +26,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class SecurityConfig {
 
     private final CorsFilter corsFilter;
+
+    private final MemberRepository memberRepository;
 
     // BCryptPasswordEncoder를 IOC해준다.
     @Bean
@@ -44,12 +50,15 @@ public class SecurityConfig {
 ////                .loginProcessingUrl("/loginProc") // "/login" 경로가 호출되면 시큐리티가 낚아채서 대신 로그인을 진행
 ////                .defaultSuccessUrl("/"); // 로그인이 성공했을 경우 이동할 경로를 설정
 ////        return http.build();
+        AuthenticationManager authManager = http.getSharedObject(AuthenticationManager.class);
         http.addFilterBefore(new MyFilter1(), BasicAuthenticationFilter.class); // BasicAuthenticationFilter 전에 내 필터를 등록하겠어.
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 사용X
                 .and()
                 .addFilter(corsFilter)
-                .formLogin().disable() // 폼 방식의 로그인을 허용하지 않겠다.
+                .addFilter(new JwtAuthFilter(authManager)) // formLogin().disable() 때문에 동작안하게 됌. 필터로 추가하면 동작하게 됌
+                .addFilter(new JwtAuthorizationFilter(authManager, memberRepository))
+                .formLogin().disable() // 기본으로 동작하는 UsernamePasswordAuthenticationFilter 동작하지 않게하기 (https://velog.io/@seongwon97/Spring-Security-Form-Login 참조)
                 .httpBasic().disable() // Authorization 필드에 ID,PW 담는 인증 방식을 허용하지 않겠다. 이곳에 JWT Token을 넣을 계획
                 .authorizeHttpRequests()
                 .requestMatchers("/api/v1/user/**").hasAnyRole("ADMIN", "MANAGER", "USER")
